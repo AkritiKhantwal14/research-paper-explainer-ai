@@ -138,16 +138,17 @@ def metadata_prompt(article):
     {article}
     """
 
-def chat_with_paper_prompt(article, question):
+def chat_with_paper_prompt(context, question):
     return f"""
     You are an expert research assistant.
 
-    Answer the user's question using only the information
-    available in the research paper.
+    Answer ONLY from the provided context.
 
-    Research Paper:
-    {article}
+    Context:
+    {context}
 
     Question:
     {question}
+
+    Answer:
     """

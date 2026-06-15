@@ -73,17 +73,15 @@ if uploaded_files:
             f.write(uploaded_file.getbuffer())
 
         article = extract_pdf_text(uploaded_file.name)
-        chunks = chunk_text(article)
 
-        if "index" not in st.session_state:
-            index, chunks = create_vector_store(chunks)
-
-            st.session_state.index = index
-            st.session_state.chunks = chunks
-        else:
-            index = st.session_state.index
-            chunks = st.session_state.chunks
         papers.append(article)
+
+    all_text = "\n\n".join(papers)
+
+    chunks = chunk_text(all_text)
+
+    index, chunks = create_vector_store(chunks)    
+
 
     st.success(f"{len(papers)} paper(s) uploaded successfully!")
 
@@ -245,6 +243,8 @@ if uploaded_files and analysis_type != "Select":
                 index,
                 chunks
             )
+            st.write("Retrieved Context:")
+            st.write(context[:1000])
             prompt = chat_with_paper_prompt(
                 context,
                 question
